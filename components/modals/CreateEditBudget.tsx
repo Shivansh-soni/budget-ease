@@ -19,6 +19,8 @@ import { Form } from "@heroui/form";
 import { Select, SelectItem } from "@heroui/select";
 import { Budget } from "@/app/user/dashboard/budget/page";
 import { Category } from "@/app/user/dashboard/categories/page";
+import { createBudget, updateBudget } from "@/utils/db/Budget";
+import { getCategories } from "@/utils/db/Categories";
 interface BudgetFormData {
   amount: number;
   category: string;
@@ -70,17 +72,11 @@ const CreateEditBudget = ({
     };
 
     try {
-      const db = await getDatabase();
-      const dbID = "67cd3861003a0561003d";
-      const collectionId = "67cd388f002c51e191e6";
-
-      if (dbID && collectionId) {
-        await db.createDocument(dbID, collectionId, ID.unique(), payload);
-        toast.success("Budget created successfully", { id: loader });
-        onOpenChange(false);
-        setRefetch(true);
-        reset();
-      }
+      await createBudget(payload as unknown as Budget);
+      toast.success("Budget created successfully", { id: loader });
+      onOpenChange(false);
+      setRefetch(true);
+      reset();
     } catch (error: any) {
       toast.error(error?.message, { id: loader });
     }
@@ -96,13 +92,7 @@ const CreateEditBudget = ({
       user: session.id,
     };
     try {
-      const db = await getDatabase();
-      await db.updateDocument(
-        process.env.NEXT_PUBLIC_APPWRITE_DB_ID!,
-        process.env.NEXT_PUBLIC_APPWRITE_DB_BUDGET_ID!,
-        item?.$id!,
-        payload
-      );
+      await updateBudget(item?.$id!, payload as unknown as Budget);
       toast.success("Budget edited successfully", { id: loader });
       onOpenChange(false);
       setRefetch(true);
@@ -119,11 +109,7 @@ const CreateEditBudget = ({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const db = await getDatabase();
-      const categories = await db.listDocuments(
-        process.env.NEXT_PUBLIC_APPWRITE_DB_ID!,
-        process.env.NEXT_PUBLIC_APPWRITE_DB_CATEGORIES_ID!
-      );
+      const categories = await getCategories();
       const documents = categories.documents as any;
       const expenses = documents.filter((c: any) => c.type === "expense");
       setCategories(expenses);
