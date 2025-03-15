@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,40 +5,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CreditCard, DollarSign, IndianRupee } from "lucide-react";
+import { formatIndianCurrency, formatRelativeTime } from "@/lib/utils";
 import { Transaction } from "@/types";
 import { getLatestTransactions } from "@/utils/db/Transactions";
-import { formatRelativeTime, formatIndianCurrency } from "@/lib/utils";
-const backup = [
-  {
-    name: "Grocery Store",
-    amount: -120.5,
-    date: "Today",
-    icon: CreditCard,
-    type: "expense",
-  },
-  {
-    name: "Salary Deposit",
-    amount: 3500.0,
-    date: "Yesterday",
-    icon: DollarSign,
-    type: "income",
-  },
-  {
-    name: "Electric Bill",
-    amount: -85.2,
-    date: "3 days ago",
-    icon: CreditCard,
-    type: "expense",
-  },
-  {
-    name: "Freelance Work",
-    amount: 750.0,
-    date: "1 week ago",
-    icon: DollarSign,
-    type: "income",
-  },
-];
+import { CreditCard, IndianRupee } from "lucide-react";
+import { useEffect, useState } from "react";
+
 const RecentTransactions = () => {
   const [latestTransactions, setLatestTransactions] = useState<Transaction[]>(
     []
@@ -66,7 +37,7 @@ const RecentTransactions = () => {
               return (
                 <div key={i} className="flex items-center">
                   <div
-                    className={`mr-4 rounded-full p-2 ${transaction.type === "income" ? "bg-green-100" : "bg-red-100"}`}
+                    className={`mr-4 rounded-full p-2 ${transaction.type === "Income" ? "bg-green-100" : "bg-red-100"}`}
                   >
                     {transaction.type === "Income" ? (
                       <IndianRupee className={`h-4 w-4 text-green-500`} />

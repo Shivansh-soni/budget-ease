@@ -97,10 +97,7 @@ export default function DashboardLayout({
         >
           <SidebarHeader>
             <div className="flex items-center gap-2 px-2">
-              <PiggyBank className="h-6 w-6 text-accent" />
-              <span className="text-xl font-bold text-primary-foreground">
-                BudgetEase
-              </span>
+              <ToggleLogo />
             </div>
           </SidebarHeader>
           <SidebarContent className="flex-1 ">
@@ -137,10 +134,9 @@ export default function DashboardLayout({
                   }}
                   color="primary"
                   className="flex w-full items-center rounded-lg gap-2"
-                  onPress={() => {
-                    SignOut();
+                  onPress={async () => {
+                    await SignOut();
                     dispatch(logout());
-                    router.push("/");
                   }}
                 >
                   <LogOut className="h-5 w-5" />
@@ -176,5 +172,21 @@ export default function DashboardLayout({
         </SidebarInset>
       </div>
     </SidebarProvider>
+  );
+}
+function ToggleLogo() {
+  const { open } = useSidebar();
+  return (
+    <>
+      <PiggyBank className={`${open ? "h-6 w-6" : "h-10 w-10"} text-accent`} />
+
+      {open && (
+        <>
+          <span className="text-xl font-bold text-primary-foreground transition-all duration-300">
+            BudgetEase
+          </span>
+        </>
+      )}
+    </>
   );
 }

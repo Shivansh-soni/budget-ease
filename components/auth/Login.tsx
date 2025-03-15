@@ -37,16 +37,23 @@ const Login = (props: { setIsResetPassword: (value: boolean) => void }) => {
     try {
       const account = await getAccount();
       await account.createEmailPasswordSession(data?.email, data?.password);
-      const session = await account.get();
-      dispatch(
-        login({
-          id: session.$id,
-          name: session.name,
-          email: session.email,
-        })
+      const promise = account.get();
+      promise.then(
+        async function (response) {
+          dispatch(
+            login({
+              id: response.$id,
+              name: response.name,
+              email: response.email,
+            })
+          );
+          toast.success("Logged in", { id: loginToast });
+          router.push("/");
+        },
+        function (error) {
+          console.log(error);
+        }
       );
-      toast.success("Logged in", { id: loginToast });
-      router.push("/");
     } catch (error) {
       toast.error("Failed to login", { id: loginToast });
     } finally {

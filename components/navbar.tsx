@@ -19,8 +19,8 @@ import NextLink from "next/link";
 import { GithubIcon, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
-import { SignOut } from "@/utils/db";
 import { SignedIn, SignedOut } from "./auth/SignedInOut";
+import { signOut } from "@/utils/db/Auth";
 
 export const Navbar = () => {
   const searchInput = (
@@ -81,7 +81,7 @@ export const Navbar = () => {
 
         <NavbarItem className="hidden md:flex">
           <SignedIn>
-            <Button onPress={SignOut}>Sign Out</Button>
+            <Button onPress={async () => await signOut()}>Sign Out</Button>
           </SignedIn>
           <SignedOut>
             <Button as={Link} href="/login">

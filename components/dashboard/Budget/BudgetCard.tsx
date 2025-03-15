@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign } from "lucide-react";
+import { IndianRupee } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { getBudget } from "@/utils/db/Budget";
 import { formatIndianCurrency } from "@/lib/utils";
@@ -42,7 +42,7 @@ const BudgetCard = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
-          <DollarSign className="h-4 w-4 text-accent" />
+          <IndianRupee className="h-4 w-4 text-accent" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">
@@ -60,7 +60,7 @@ const BudgetCard = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Spent</CardTitle>
-          <DollarSign className="h-4 w-4 text-red-500" />
+          <IndianRupee className="h-4 w-4 text-red-500" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">
@@ -89,7 +89,7 @@ const BudgetCard = () => {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Remaining</CardTitle>
-          <DollarSign className="h-4 w-4 text-green-500" />
+          <IndianRupee className="h-4 w-4 text-green-500" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-primary">
