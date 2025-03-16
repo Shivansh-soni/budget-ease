@@ -23,7 +23,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh "cp .next/  /var/www/node/budget-ease -r"
-                sh "npm run start"
+                // sh "npm run start"
                 sh "pm2 reload 0"
                 // sh 'sudo systemctl restart nginx'   
             }
