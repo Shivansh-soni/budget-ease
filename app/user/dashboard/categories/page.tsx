@@ -25,6 +25,7 @@ import { Button } from "@heroui/button";
 import { getClient, getDatabase } from "@/utils/db";
 import { Databases } from "appwrite";
 import toast from "react-hot-toast";
+import { deleteCategory, getCategories } from "@/utils/db/Categories";
 
 const categories = [
   {
@@ -116,11 +117,7 @@ export default function CategoriesPage() {
   const [refetch, setRefetch] = useState(true);
   useEffect(() => {
     const fetchCategories = async () => {
-      const db = await getDatabase();
-      const categories = await db.listDocuments(
-        process.env.NEXT_PUBLIC_APPWRITE_DB_ID!,
-        process.env.NEXT_PUBLIC_APPWRITE_DB_CATEGORIES_ID!
-      );
+      const categories = await getCategories();
       console.log("categories", categories);
       setCategories(categories.documents as any);
     };
@@ -134,11 +131,7 @@ export default function CategoriesPage() {
     const loader = toast.loading("Deleting category...");
     const db = await getDatabase();
     try {
-      await db.deleteDocument(
-        process.env.NEXT_PUBLIC_APPWRITE_DB_ID!,
-        process.env.NEXT_PUBLIC_APPWRITE_DB_CATEGORIES_ID!,
-        id
-      );
+      await deleteCategory(id);
       const updatedCategories = categories.filter((c) => c.$id !== id);
       setCategories(updatedCategories);
       toast.success("Category deleted successfully");

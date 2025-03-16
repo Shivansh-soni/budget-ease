@@ -1,12 +1,13 @@
 "use client";
+import { getAuth } from "@/redux/features/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { signOut } from "@/utils/db/Auth";
 import React from "react";
-import { useAppDispatch } from "@/redux/hooks";
-import { account } from "@/utils/db";
-import { getAuth, login, logout } from "@/redux/features/authSlice";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
 
+  // throw new Error("AuthProvider is not implemented");
   React.useEffect(() => {
     dispatch(getAuth());
   }, []);

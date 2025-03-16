@@ -15,9 +15,7 @@ import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 import { useAppSelector } from "@/redux/hooks";
 import toast from "react-hot-toast";
-import { createCategory } from "@/utils/actions/category.actions";
-import { getClient } from "@/utils/db";
-import { Databases, ID } from "appwrite";
+import { createCategory, updateCategory } from "@/utils/db/Categories";
 import { Category } from "@/app/user/dashboard/categories/page";
 
 interface CreateCategoryFormData {
@@ -71,19 +69,11 @@ const CreateCategory = ({
   const onSubmit = async (data: CreateCategoryFormData) => {
     setIsLoading(true);
     const loader = toast.loading("Creating category...");
-    const payload = {
-      name: data.name,
-      type: data.type,
-      description: data.description,
-      color: data.color,
-      user: session.id,
-    };
     try {
-      const db = await getDatabase();
-      const id = ID.unique();
-      const dbID = process.env.NEXT_PUBLIC_APPWRITE_DB_ID!;
-      const collectionId = process.env.NEXT_PUBLIC_APPWRITE_DB_CATEGORIES_ID!;
-      await db.createDocument(dbID, collectionId, id, payload);
+      await createCategory({
+        ...data,
+        user: session.id,
+      } as unknown as Category);
       toast.success("Category created successfully", { id: loader });
       onOpenChange(false);
       setRefetch(true);
@@ -96,19 +86,11 @@ const CreateCategory = ({
   const handleEdit = async (data: CreateCategoryFormData) => {
     setIsLoading(true);
     const loader = toast.loading("Editing category...");
-    const payload = {
-      name: data.name,
-      type: data.type,
-      description: data.description,
-      color: data.color,
-      user: session.id,
-    };
     try {
-      const client = await getClient();
-      const db = new Databases(client);
-      const dbId = process.env.NEXT_PUBLIC_APPWRITE_DB_ID!;
-      const collectionId = process.env.NEXT_PUBLIC_APPWRITE_DB_CATEGORIES_ID!;
-      await db.updateDocument(dbId, collectionId, item?.$id!, payload);
+      await updateCategory(item?.$id!, {
+        ...data,
+        user: session.id,
+      } as unknown as Category);
       toast.success("Category edited successfully", { id: loader });
       onOpenChange(false);
       setRefetch(true);

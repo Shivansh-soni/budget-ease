@@ -12,9 +12,11 @@ import { signupSchema } from "@/utils/validattions";
 import toast from "react-hot-toast";
 import { getAccount, ID } from "@/utils/db";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/utils/actions/user.actions";
+
 import { useAppDispatch } from "@/redux/hooks";
 import { login } from "@/redux/features/authSlice";
+import { signIn, signUp } from "@/utils/db/Auth";
+import { createUser } from "@/utils/db/Users";
 export interface SignupFormData {
   email: string;
   firstName: string;
@@ -49,20 +51,15 @@ function Signup() {
     }
     const account = await getAccount();
     const userID = ID.unique();
-    try {
-      setIsLoading(true);
-      await account.create(
-        userID,
-        data.email,
-        data.password,
-        `${data.firstName} ${data.lastName}`
-      );
-      accountCreated = true;
-    } catch (error) {
-      console.log("error while creating", error);
-      toast.error("Failed to create account", { id: loginToast });
-      return;
-    }
+
+    setIsLoading(true);
+
+    await signUp(
+      data.email,
+      data.password,
+      `${data.firstName} ${data.lastName}`
+    );
+
     try {
       const email = data.email;
       const password = data.password;
@@ -70,25 +67,32 @@ function Signup() {
         toast.error("Invalid email or password", { id: loginToast });
         return;
       }
-      await account.createEmailPasswordSession(`${email}`, `${password}`);
-      const session = await account.get();
-      dispatch(
-        login({
-          id: session.$id,
-          name: session.name,
-          email: session.email,
-        })
+      await signIn(data.email, data.password);
+      const promise = account.get();
+      promise.then(
+        async function (response) {
+          dispatch(
+            login({
+              id: response.$id,
+              name: response.name,
+              email: response.email,
+            })
+          );
+          await createUser({
+            name: `${data.firstName} ${data.lastName}`,
+            email: data.email,
+            role: "user",
+            id: userID,
+          });
+          toast.success("Account created, kindly sign in ", { id: loginToast });
+          router.push("/");
+          return response;
+        },
+        function (error) {
+          console.log(error);
+          return null;
+        }
       );
-      if (session) {
-        await createUser({
-          name: `${data.firstName} ${data.lastName}`,
-          email: data.email,
-          role: "user",
-          id: userID,
-        });
-        toast.success("Account created, kindly sign in ", { id: loginToast });
-        router.push("/");
-      }
     } catch (error) {
       console.log("error while signing in", error);
       toast.error("Failed to create account", { id: loginToast });

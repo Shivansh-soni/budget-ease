@@ -22,11 +22,11 @@ export const getAuth = createAsyncThunk("auth/getAuth", async () => {
       return response;
     },
     function (error) {
-      console.log(error);
+      // console.log(error);
       return null;
     }
   );
-  console.log("session", promise);
+  console.log("session123", promise);
   return promise;
 });
 

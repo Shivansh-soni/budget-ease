@@ -1,34 +1,26 @@
 "use client";
-import {
-  Navbar as HeroUINavbar,
-  NavbarContent,
-  NavbarMenu,
-  NavbarMenuToggle,
-  NavbarBrand,
-  NavbarItem,
-  NavbarMenuItem,
-} from "@heroui/navbar";
 import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 import { Kbd } from "@heroui/kbd";
 import { Link } from "@heroui/link";
-import { Input } from "@heroui/input";
-import { link as linkStyles } from "@heroui/theme";
-import NextLink from "next/link";
-import clsx from "clsx";
-
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
 import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
-  HeartFilledIcon,
-  SearchIcon,
-  Logo,
-} from "@/components/icons";
+  Navbar as HeroUINavbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from "@heroui/navbar";
+import { link as linkStyles } from "@heroui/theme";
+import clsx from "clsx";
+import NextLink from "next/link";
+
+import { GithubIcon, SearchIcon } from "@/components/icons";
+import { ThemeSwitch } from "@/components/theme-switch";
+import { siteConfig } from "@/config/site";
 import { SignedIn, SignedOut } from "./auth/SignedInOut";
-import { account, SignOut } from "@/utils/db";
-import Image from "next/image";
+import { signOut } from "@/utils/db/Auth";
 
 export const Navbar = () => {
   const searchInput = (
@@ -89,7 +81,7 @@ export const Navbar = () => {
 
         <NavbarItem className="hidden md:flex">
           <SignedIn>
-            <Button onPress={SignOut}>Sign Out</Button>
+            <Button onPress={async () => await signOut()}>Sign Out</Button>
           </SignedIn>
           <SignedOut>
             <Button as={Link} href="/login">
