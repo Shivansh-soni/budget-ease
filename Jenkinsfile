@@ -27,6 +27,7 @@ pipeline {
                 sh "npm install"
                 sh "pm2 reload 0"
                 // sh "npm run start"
+                //
                 // sh 'sudo systemctl restart nginx'   
             }
         }
