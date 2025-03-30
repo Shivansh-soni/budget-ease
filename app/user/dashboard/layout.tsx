@@ -13,6 +13,7 @@ import {
   Settings,
   Tag,
   Menu,
+  Hourglass,
 } from "lucide-react";
 // import { Button } from "@/components/ui/button";
 import { Button } from "@heroui/button";
@@ -34,7 +35,14 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import { SignOut } from "@/utils/db";
 import { logout } from "@/redux/features/authSlice";
-
+import toast from "react-hot-toast";
+import { ThemeSwitch } from "@/components/theme-switch";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/dropdown";
 export default function DashboardLayout({
   children,
 }: {
@@ -70,38 +78,41 @@ export default function DashboardLayout({
       label: "Accounts",
       href: "/user/dashboard/accounts",
       active: pathname === "/user/dashboard/accounts",
+      disabled: true,
     },
     {
       icon: PiggyBank,
       label: "Goals",
       href: "/user/dashboard/goals",
       active: pathname === "/user/dashboard/goals",
+      disabled: true,
     },
     {
       icon: Settings,
       label: "Settings",
       href: "/user/dashboard/settings",
       active: pathname === "/user/dashboard/settings",
+      disabled: true,
     },
   ];
 
   const dispatch = useAppDispatch();
 
   return (
-    <SidebarProvider>
-      <div className="flex h-screen w-full bg-cornsilk">
+    <SidebarProvider className=''>
+      <div className='flex h-screen w-full bg-cornsilk'>
         <Sidebar
-          variant="inset"
-          collapsible="icon"
-          className="bg-dark-moss-green flex flex-col items-center justify-center  h-full text-primary-foreground"
+          variant='inset'
+          collapsible='icon'
+          className=' bg-white sm:bg-dark-moss-green  flex flex-col items-center justify-center  h-full text-primary-foreground'
         >
           <SidebarHeader>
-            <div className="flex items-center gap-2 px-2">
+            <div className='flex items-center gap-2 px-2'>
               <ToggleLogo />
             </div>
           </SidebarHeader>
-          <SidebarContent className="flex-1 ">
-            <SidebarMenu className="mt-20 space-y-4 p-2 text-lg">
+          <SidebarContent className='flex-1 '>
+            <SidebarMenu className='mt-20 space-y-4 p-2 text-lg'>
               {routes.map((route) => (
                 <SidebarMenuItem key={route.href}>
                   <SidebarMenuButton
@@ -109,17 +120,39 @@ export default function DashboardLayout({
                     isActive={route.active}
                     tooltip={route.label}
                   >
-                    <Link
-                      href={route.href}
-                      className="flex items-center gap-2 "
-                    >
-                      <route.icon className="h-8 w-8" />
-                      <p
-                        className={`text-lg ${route.active ? "font-bold" : ""}`}
+                    {route.disabled ? (
+                      <div
+                        onClick={() => {
+                          toast.success("This feature will be available soon", {
+                            duration: 3000,
+                            icon: (
+                              <div className='p-1 rounded-full bg-blue-500'>
+                                <Hourglass className=' text-white' size={16} />
+                              </div>
+                            ),
+                          });
+                        }}
+                        className='w-full cursor-pointer bg-transparent text-white hover:bg-transparent hover:text-white text-left '
                       >
-                        {route.label}
-                      </p>
-                    </Link>
+                        <route.icon className='h-8 w-8' />
+                        <p className='text-lg'>{route.label}</p>
+                      </div>
+                    ) : (
+                      <Link
+                        onClick={() => {
+                          // setOpenMobile(false);
+                        }}
+                        href={route.href}
+                        className='flex items-center gap-2 '
+                      >
+                        <route.icon className='h-8 w-8' />
+                        <p
+                          className={`text-lg ${route.active ? "font-bold" : ""}`}
+                        >
+                          {route.label}
+                        </p>
+                      </Link>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -127,48 +160,69 @@ export default function DashboardLayout({
           </SidebarContent>
           <SidebarFooter>
             <SidebarMenu>
-              <SidebarMenuItem className="">
+              <SidebarMenuItem className=''>
                 <Button
                   style={{
                     borderRadius: "0.5rem",
                   }}
-                  color="primary"
-                  className="flex w-full items-center rounded-lg gap-2"
+                  color='primary'
+                  className='flex w-full items-center rounded-lg gap-2'
                   onPress={async () => {
                     await SignOut();
                     dispatch(logout());
                   }}
                 >
-                  <LogOut className="h-5 w-5" />
+                  <LogOut className='h-5 w-5' />
                   <span>Logout</span>
                 </Button>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarFooter>
         </Sidebar>
-        <SidebarInset className="flex flex-col">
-          <header className="border-b border-secondary/20 bg-white/50">
-            <div className="flex h-16 items-center justify-between px-4">
-              <div className="flex items-center gap-2">
+        <SidebarInset className='flex flex-col dark:bg-[#1d1d1d]'>
+          <header className='border-b border-secondary/20 bg-white/50  dark:bg-[#1d1d1d] '>
+            <div className='flex h-16 items-center justify-between px-4'>
+              <div className='flex items-center gap-2'>
                 <SidebarTrigger />
-                <h1 className="text-xl font-semibold text-primary">
+                <h1 className='text-xl font-semibold text-primary dark:text-white'>
                   Dashboard
                 </h1>
               </div>
-              <div className="flex items-center gap-4">
-                <Button variant="ghost" className="md:hidden">
-                  <Menu className="h-5 w-5" />
-                </Button>
-                <Avatar>
-                  <AvatarImage src="/placeholder-user.jpg" alt="User" />
-                  <AvatarFallback className="bg-accent text-primary-foreground">
-                    {isLoaded && session?.name?.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+              <div className='flex items-center gap-4'>
+                <ThemeSwitch />
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Avatar>
+                      <AvatarImage src='/placeholder-user.jpg' alt='User' />
+                      <AvatarFallback className='bg-accent text-primary-foreground'>
+                        {isLoaded && session?.name?.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label='Static Actions'>
+                    {/* <DropdownItem key='copy'>Copy link</DropdownItem> */}
+                    <DropdownItem
+                      key='logout'
+                      className='text-danger flex items-center gap-2 w-full'
+                      color='danger'
+                    >
+                      <div
+                        className='flex items-center gap-2'
+                        onClick={async () => {
+                          await SignOut();
+                          dispatch(logout());
+                        }}
+                      >
+                        <LogOut size={16} />
+                        Logout
+                      </div>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
           </header>
-          <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>
+          <main className='flex-1 overflow-auto p-4 md:p-6'>{children}</main>
         </SidebarInset>
       </div>
     </SidebarProvider>
@@ -176,13 +230,14 @@ export default function DashboardLayout({
 }
 function ToggleLogo() {
   const { open } = useSidebar();
+
   return (
     <>
       <PiggyBank className={`${open ? "h-6 w-6" : "h-10 w-10"} text-accent`} />
 
       {open && (
         <>
-          <span className="text-xl font-bold text-primary-foreground transition-all duration-300">
+          <span className='text-xl font-bold text-primary-foreground transition-all duration-300'>
             BudgetEase
           </span>
         </>

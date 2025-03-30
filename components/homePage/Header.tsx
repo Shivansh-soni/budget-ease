@@ -36,15 +36,15 @@ const navLinks = [
 const Header = () => {
   const dispatch = useAppDispatch();
   return (
-    <header className="border-b border-secondary/20 dark:bg-[#1a1a1a]  dark:text-white">
-      <div className="container flex items-center justify-between py-4">
-        <div className="flex items-center gap-2">
-          <PiggyBank className="h-8 w-8 text-accent" />
-          <span className="text-2xl font-bold text-primary dark:text-white">
+    <header className='border-b border-secondary/20 dark:bg-[#1a1a1a]  dark:text-white'>
+      <div className='container flex items-center justify-between py-4'>
+        <div className='flex items-center gap-2'>
+          <PiggyBank className='h-8 w-8 text-accent' />
+          <span className='text-2xl font-bold text-primary dark:text-white'>
             BudgetEase
           </span>
         </div>
-        <nav className="hidden text-primary  dark:text-white md:flex items-center gap-6">
+        <nav className='hidden text-primary  dark:text-white md:flex items-center gap-6'>
           {navLinks.map((link) => (
             <React.Fragment key={link.href}>
               {link.protected ? (
@@ -52,7 +52,7 @@ const Header = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className=" hover:text-secondary transition-colors"
+                    className=' hover:text-secondary transition-colors'
                   >
                     {link.label}
                   </Link>
@@ -61,7 +61,7 @@ const Header = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className=" hover:text-secondary transition-colors"
+                  className=' hover:text-secondary transition-colors'
                 >
                   {link.label}
                 </Link>
@@ -69,15 +69,15 @@ const Header = () => {
             </React.Fragment>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
-          <div className="">
+        <div className='flex items-center gap-4'>
+          <div className=''>
             <ThemeSwitch />
           </div>
           <SignedOut>
             <Button
               as={Link}
-              href="/auth"
-              className="bg-accent hover:bg-accent-secondary"
+              href='/auth'
+              className='bg-accent hover:bg-accent-secondary'
             >
               Get Started
             </Button>
@@ -88,9 +88,9 @@ const Header = () => {
                 dispatch(logout());
                 SignOut();
               }}
-              className="bg-accent hover:bg-accent-secondary"
+              className='bg-accent hover:bg-accent-secondary'
             >
-              <LogOutIcon className="h-4 w-4" /> Logout
+              <LogOutIcon className='h-4 w-4' /> Logout
             </Button>
           </SignedIn>
         </div>

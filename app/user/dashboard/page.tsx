@@ -37,7 +37,7 @@ const data = [
   { name: "Jun", income: 2390, expenses: 3800 },
   { name: "Jul", income: 3490, expenses: 4300 },
 ];
-
+const COLORS = ["#606C38", "#DDA15E", "#BC6C25", "#283618", "#FEFAE0"];
 const categoryData = [
   { category: "Housing", amount: 1200 },
   { category: "Food", amount: 450 },
@@ -57,27 +57,27 @@ export default function DashboardPage() {
     setRefetch(!refetch);
   };
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Greetings */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-primary">
+          <h2 className='text-3xl font-bold tracking-tight text-primary dark:text-white'>
             Dashboard
           </h2>
-          <p className="text-dark-moss-green">
+          <p className='text-dark-moss-green dark:text-white'>
             Welcome back, {session?.name.split(" ")[0]}! Here's an overview of
             your finances.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className='flex gap-2'>
           <Button
-            className="bg-accent hover:bg-accent-secondary"
+            className='bg-accent hover:bg-accent-secondary'
             onClick={() => {
               onOpenChange();
               setType("Income");
             }}
           >
-            <DollarSign className="mr-2 h-4 w-4" />
+            <DollarSign className='mr-2 h-4 w-4' />
             Add Income
           </Button>
           <Button
@@ -85,10 +85,10 @@ export default function DashboardPage() {
               onOpenChange();
               setType("Expense");
             }}
-            variant="outline"
-            className="border-secondary text-secondary hover:bg-secondary hover:text-primary-foreground"
+            variant='outline'
+            className='border-secondary text-secondary hover:bg-secondary hover:text-primary-foreground dark:text-white dark:hover:bg-secondary dark:hover:text-primary-foreground'
           >
-            <CreditCard className="mr-2 h-4 w-4" />
+            <CreditCard className='mr-2 h-4 w-4' />
             Add Expense
           </Button>
         </div>
@@ -96,37 +96,37 @@ export default function DashboardPage() {
       {/* Amount Card */}
       <AmountCard />
       {/* Tabs */}
-      <Tabs defaultValue="overview" className="space-y-4">
+      <Tabs defaultValue='overview' className='space-y-4'>
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value='overview'>Overview</TabsTrigger>
+          <TabsTrigger value='analytics'>Analytics</TabsTrigger>
+          <TabsTrigger value='reports'>Reports</TabsTrigger>
         </TabsList>
         <TabsContent
-          value="overview"
-          className="space-y-4 w-full flex flex-col gap-4"
+          value='overview'
+          className='space-y-4 w-full flex flex-col gap-4'
         >
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="lg:col-span-4">
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7'>
+            <Card className='lg:col-span-4'>
               <CardHeader>
                 <CardTitle>Income vs Expenses</CardTitle>
                 <CardDescription>
                   Your financial flow for the past 7 months
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pl-2">
-                {/* <ChartContainer
+              <CardContent className='sm:pl-2 '>
+                <ChartContainer
                   config={{
                     income: {
                       label: "Income",
-                      color: "hsl(var(--secondary))",
+                      color: COLORS[0],
                     },
                     expenses: {
                       label: "Expenses",
-                      color: "hsl(var(--accent))",
+                      color: COLORS[1],
                     },
                   }}
-                  className="min-h-[300px]"
+                  className='min-h-[300px] w-full'
                 >
                   <BarChart
                     accessibilityLayer
@@ -138,17 +138,21 @@ export default function DashboardPage() {
                       bottom: 5,
                     }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <CartesianGrid strokeDasharray='3 3' vertical={false} />
+                    <XAxis dataKey='name' />
                     <YAxis />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="income" fill="hsl(var(--secondary))" />
-                    <Bar dataKey="expenses" fill="hsl(var(--accent))" />
+                    <ChartTooltip
+                      content={
+                        <ChartTooltipContent className='bg-black/80 text-white rounded-md p-2 shadow-lg border border-gray-700' />
+                      }
+                    />
+                    <Bar dataKey='income' fill={COLORS[0]} />
+                    <Bar dataKey='expenses' fill={COLORS[1]} />
                   </BarChart>
-                </ChartContainer> */}
+                </ChartContainer>
               </CardContent>
             </Card>
-            <Card className="lg:col-span-3">
+            <Card className='lg:col-span-3'>
               <CardHeader>
                 <CardTitle>Expense Categories</CardTitle>
                 <CardDescription>
@@ -160,39 +164,39 @@ export default function DashboardPage() {
                   config={{
                     amount: {
                       label: "Amount",
-                      color: "hsl(var(--accent))",
+                      color: COLORS[1],
                     },
                   }}
-                  className="min-h-[300px]"
+                  className='min-h-[300px]'
                 >
                   <BarChart
                     accessibilityLayer
                     data={categoryData}
-                    layout="vertical"
+                    layout='vertical'
                     margin={{
                       top: 5,
                       right: 30,
-                      left: 80,
+                      left: 0,
                       bottom: 5,
                     }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="category" />
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis type='number' />
+                    <YAxis type='category' dataKey='category' />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="amount" fill="hsl(var(--accent))" />
+                    <Bar dataKey='amount' fill={COLORS[1]} />
                   </BarChart>
                 </ChartContainer> */}
               </CardContent>
             </Card>
           </div>
-          <div className="grid gap-4 md:grid-cols-2  w-full">
+          <div className='grid gap-4 md:grid-cols-2  w-full'>
             <RecentTransactions />
             <BudgetStatus />
             {/* <Savings /> */}
           </div>
         </TabsContent>
-        <TabsContent value="analytics" className="space-y-4">
+        <TabsContent value='analytics' className='space-y-4'>
           <Card>
             <CardHeader>
               <CardTitle>Detailed Analytics</CardTitle>
@@ -201,13 +205,13 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-dark-moss-green">
+              <p className='text-dark-moss-green'>
                 Analytics content will be displayed here.
               </p>
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="reports" className="space-y-4">
+        <TabsContent value='reports' className='space-y-4'>
           <Card>
             <CardHeader>
               <CardTitle>Financial Reports</CardTitle>
@@ -216,7 +220,7 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-dark-moss-green">
+              <p className='text-dark-moss-green'>
                 Reports content will be displayed here.
               </p>
             </CardContent>
