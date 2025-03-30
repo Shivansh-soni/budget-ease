@@ -38,28 +38,28 @@ const BudgetAllocation = () => {
     fetchBudget();
   }, []);
   return (
-    <Card>
+    <Card className=''>
       <CardHeader>
         <CardTitle>Budget Allocation</CardTitle>
         <CardDescription>
           How your budget is distributed across categories
         </CardDescription>
       </CardHeader>
-      <CardContent className="pl-2">
-        <div className="h-[300px]">
+      <CardContent className='sm:pl-2 '>
+        <div className='h-[300px] w-full relative -left-5 sm:left-0'>
           {loading ? (
-            <Spinner className="h-full w-full" />
+            <Spinner className='h-full w-full' />
           ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+            <ResponsiveContainer width='100%' height='100%'>
+              <PieChart className=''>
                 <Pie
                   data={pieData}
-                  cx="50%"
-                  cy="50%"
+                  cx='50%'
+                  cy='50%'
                   labelLine={false}
                   outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
+                  fill='#8884d8'
+                  dataKey='value'
                   label={({ name, percent }) =>
                     `${name} ${(percent * 100).toFixed(0)}%`
                   }

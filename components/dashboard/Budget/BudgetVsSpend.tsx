@@ -52,7 +52,7 @@ const BudgetVsSpend = () => {
         className={`pl-2 ${loading && " flex justify-center items-center"} h-full`}
       >
         {loading ? (
-          <Spinner className="h-full w-full " />
+          <Spinner className='h-full w-full ' />
         ) : (
           <ChartContainer
             config={{
@@ -65,7 +65,7 @@ const BudgetVsSpend = () => {
                 color: COLORS[1],
               },
             }}
-            className="min-h-[300px]"
+            className='min-h-[300px] w-full'
           >
             <BarChart
               accessibilityLayer
@@ -77,12 +77,12 @@ const BudgetVsSpend = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="category" />
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis dataKey='category' />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="budget" fill={COLORS[0]} />
-              <Bar dataKey="spent" fill={COLORS[1]} />
+              <Bar dataKey='budget' fill={COLORS[0]} />
+              <Bar dataKey='spent' fill={COLORS[1]} />
             </BarChart>
           </ChartContainer>
         )}
